@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do App</title>
+    <link rel="stylesheet" href="/stylesheets/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>To-Do App</h1>
+        <form class="first" action="/create" method="post">
+            <input id="input" name="title" placeholder="Add a new todo..." required>
+            <button type="submit" id="addbtn">Add</button>
+        </form>
+
+        <div class="middle">
+            <div class="filters">
+                <div class="filters">
+                    <a href="/filter/all" class="<%= activeFilter==='all' ? 'active' : '' %>">All</a>
+                    <a href="/filter/completed" class="<%= activeFilter==='completed' ? 'active' : '' %>">Completed</a>
+                    <a href="/filter/pending" class="<%= activeFilter==='pending' ? 'active' : '' %>">Pending</a>
+                </div>
+
+            </div>
+            <a class="deleteall" href="/deleteall"
+                onclick="return confirm('Are you sure? This will delete all completed tasks!')">🗑 Clear Completed
+            </a>
+        </div>
+
+
+        <div class="todo-container">
+            <% if(todos.length>0){%>
+                <%todos.slice().reverse().forEach(todo=>{%>
+                    <div class="todo">
+                        <form action="check/<%= todo._id %>" method="post">
+                            <input class="check" name="done" value="true" type="checkbox" onchange="this.form.submit()"
+                                <%=todo.check ? "checked" : "" %>>
+                        </form>
+
+                        <div>
+                            <span class="<%= todo.check ? 'completed' : '' %>">
+                                <%=todo.title%>
+                            </span>
+                            <div class="btns">
+                                <a class="edit" href="/edit/<%= todo._id %>">Edit</a>
+                                <a class="delete" href="/delete/<%= todo._id %>">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    <%})%>
+                        <%}else{%>
+                            <p id="empty">No todos yet!</p>
+                            <%}%>
+        </div>
+    </div>
+</body>
+
+</html>
