@@ -63,7 +63,7 @@ app.get("/filter/:type", async (req, res) => {
 
   if (type === 'completed') todos = await Todo.find({ check: true })
   else if (type === 'pending') todos = await Todo.find({ check: false })
-  else res.redirect('/')
+  else return res.redirect('/')
 
   res.render("index", { todos , activeFilter: type})
 })
@@ -73,12 +73,6 @@ app.get("/deleteall", async(req, res)=>{
   await Todo.deleteMany({check: true})
   res.redirect('/')
 })
-
-app.get('/search', async (req, res) => {
-  const q = req.query.q;
-  const todos = await Todo.find({ title: { $regex: q, $options: "i" } });
-  res.render("index", { todos });
-});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
